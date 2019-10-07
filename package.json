@@ -1,0 +1,12 @@
+{
+  "name": "wasm-example",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": "git@github.com:KamilCybulski/wasm-example.git",
+  "author": "Kamil <kamil.cybulski@10clouds.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "express": "4.17.1"
+  }
+}
