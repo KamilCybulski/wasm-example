@@ -1,7 +1,20 @@
-const onNumbersWasmLoaded = (wasm) => {
-  console.log('Double of 876 is: ', wasm.instance.exports.getDouble(876));
-}
+window.addEventListener('DOMContentLoaded', () => {
+  
+  const displayNumber = (n) => {
+    document.getElementById('target').innerText = `The number is: ${n}`;
+  };
 
-WebAssembly
-  .instantiateStreaming(fetch('numbers.wasm'))
-  .then(onNumbersWasmLoaded);
+  const onNumbersWasmLoaded = (wasm) => {
+    wasm.instance.exports.displayNumberDouble(876);
+  };
+
+  const imports = {
+    env: {
+      displayNumber,
+    },
+  };
+  
+  WebAssembly
+    .instantiateStreaming(fetch('numbers.wasm'), imports)
+    .then(onNumbersWasmLoaded);
+});
