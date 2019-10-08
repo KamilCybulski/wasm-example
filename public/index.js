@@ -1,28 +1,25 @@
 window.addEventListener('DOMContentLoaded', () => {
 
-  // const displayNumber = (n) => {
-  //   document.getElementById('target').innerText = `The number is: ${n}`;
-  // };
+  let wasmMemory
 
-  // const onNumbersWasmLoaded = (wasm) => {
-  //   wasm.instance.exports.displayNumberDouble(876);
-  // };
+  const getStringFromC = (offset, length) => {
+    const strBuffer = new Uint8Array(wasmMemory.buffer, offset, length);
+    const text = new TextDecoder().decode(strBuffer);
+    console.log(text);
+  }
 
-  // const imports = {
-  //   env: {
-  //     displayNumber,
-  //   },
-  // };
-  
-  // WebAssembly
-  //   .instantiateStreaming(fetch('numbers.wasm'), imports)
-  //   .then(onNumbersWasmLoaded);
+  const imports = {
+    env: {
+      getStringFromC,
+    }
+  }
 
   const onStringsWasmLoaded = wasm => {
-    console.log(wasm.instance.exports.sayHello());
+    wasmMemory = wasm.instance.exports.memory;
+    wasm.instance.exports.sayHello();
   }
 
   WebAssembly
-    .instantiateStreaming(fetch('strings.wasm'))
+    .instantiateStreaming(fetch('strings.wasm'), imports)
     .then(onStringsWasmLoaded);
 });
